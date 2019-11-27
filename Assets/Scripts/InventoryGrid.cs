@@ -22,6 +22,10 @@ public class InventoryGrid : MonoBehaviour
     public Item addingItem;
     public bool addItem;
 
+    [Header("Debugging")]
+    public List<string> debuggingKeys = new List<string>();
+    private readonly Dictionary<string, UIItem> uiItems = new Dictionary<string, UIItem>();
+
     private void Start()
     {
         UISlot newSlot;
@@ -57,13 +61,21 @@ public class InventoryGrid : MonoBehaviour
     {
         int x = 0;
         int y = 0;
-        if (FindEmptySlot(item, out x, out y))
+        if (FindEmptySlots(item, out x, out y))
         {
             UIItem newItem = Instantiate(itemPrefab, itemContainer);
             newItem.x = x;
             newItem.y = y;
             newItem.item = item;
             newItem.grid = this;
+            for (int rY = y; rY < y + item.sizeY; ++rY)
+            {
+                for (int rX = x; rX < x + item.sizeX; ++rX)
+                {
+                    debuggingKeys.Add(rX + "_" + rY);
+                    uiItems[rX + "_" + rY] = newItem;
+                }
+            }
         }
         else
         {
@@ -71,10 +83,39 @@ public class InventoryGrid : MonoBehaviour
         }
     }
 
-    public bool FindEmptySlot(Item item, out int x, out int y)
+    public bool FindEmptySlots(Item item, out int x, out int y)
     {
         x = -1;
         y = -1;
+        for (int rY = 0; rY < gridSizeY; ++rY)
+        {
+            for (int rX = 0; rX < gridSizeX; ++rX)
+            {
+                if (IsEnoughSlots(item, rX, rY))
+                {
+                    x = rX;
+                    y = rY;
+                    return true;
+                }
+            }
+        }
         return false;
+    }
+
+    public bool IsEnoughSlots(Item item, int x, int y)
+    {
+        if (y + item.sizeY > gridSizeY ||
+            x + item.sizeX > gridSizeX)
+            return false;
+
+        for (int rY = y; rY < y + item.sizeY; ++rY)
+        {
+            for (int rX = x; rX < x + item.sizeX; ++rX)
+            {
+                if (uiItems.ContainsKey(rX + "_" + rY))
+                    return false;
+            }
+        }
+        return true;
     }
 }
