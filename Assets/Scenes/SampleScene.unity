@@ -308,15 +308,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5325662459299853685, guid: b2e27122c7791c84698c6040ba050239,
     type: 3}
-  slotContainer: {fileID: 1373460171}
-  itemPrefab: {fileID: 0}
-  itemContainer: {fileID: 1373460171}
-  sizeX: 40
-  sizeY: 40
+  slotContainer: {fileID: 1367247511}
+  itemPrefab: {fileID: -5461992505606381878, guid: 7a67a7abaaf80e641980546516059a82,
+    type: 3}
+  itemContainer: {fileID: 1367247511}
+  gridSizeX: 8
+  gridSizeY: 4
+  slotSizeX: 40
+  slotSizeY: 40
   spaceX: 2
   spaceY: 2
   marginX: 2
   marginY: 2
+  addingItem: {fileID: 0}
+  addItem: 0
+  debuggingKeys: []
 --- !u!4 &873053422
 Transform:
   m_ObjectHideFlags: 0
@@ -414,6 +420,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1367247510
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1367247511}
+  m_Layer: 5
+  m_Name: SlotContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1367247511
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1367247510}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1373460171}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1373460167
 GameObject:
   m_ObjectHideFlags: 0
@@ -503,7 +544,8 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children: []
+  m_Children:
+  - {fileID: 1367247511}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
