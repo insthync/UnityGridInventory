@@ -18,11 +18,11 @@ public class UIItem : MonoBehaviour
         tempTransform.anchorMin = new Vector2(0, 1);
         tempTransform.anchorMax = new Vector2(0, 1);
         tempTransform.sizeDelta = new Vector2(
-            (grid.sizeX * item.sizeX) + ((grid.spaceX - 1) * item.sizeX), 
-            -((grid.sizeY * item.sizeY) + ((grid.spaceY - 1) * item.sizeY)));
+            (grid.slotSizeX * item.sizeX) + ((grid.spaceX - 1) * item.sizeX), 
+            -((grid.slotSizeY * item.sizeY) + ((grid.spaceY - 1) * item.sizeY)));
         tempTransform.anchoredPosition = new Vector2(
-            grid.marginX + (grid.sizeX * x) + (grid.spaceX * x),
-            -(grid.marginY + (grid.sizeY * y) + (grid.spaceY * y)));
+            grid.marginX + (grid.slotSizeX * x) + (grid.spaceX * x),
+            -(grid.marginY + (grid.slotSizeY * y) + (grid.spaceY * y)));
         icon.color = item.color;
     }
 }

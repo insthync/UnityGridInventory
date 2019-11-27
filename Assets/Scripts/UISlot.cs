@@ -15,10 +15,10 @@ public class UISlot : MonoBehaviour
         tempTransform.pivot = new Vector2(0, 1);
         tempTransform.anchorMin = new Vector2(0, 1);
         tempTransform.anchorMax = new Vector2(0, 1);
-        tempTransform.sizeDelta = new Vector2(grid.sizeX, grid.sizeY);
+        tempTransform.sizeDelta = new Vector2(grid.slotSizeX, grid.slotSizeY);
         tempTransform.anchoredPosition = new Vector2(
-            grid.marginX + (grid.sizeX * x) + (grid.spaceX * x),
-            -(grid.marginY + (grid.sizeY * y) + (grid.spaceY * y)));
+            grid.marginX + (grid.slotSizeX * x) + (grid.spaceX * x),
+            -(grid.marginY + (grid.slotSizeY * y) + (grid.spaceY * y)));
     }
 
     public void OnClick()
