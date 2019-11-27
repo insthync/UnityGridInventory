@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 35679d46ec50e604aab0f7253d7fc6b9, type: 3}
-  m_Name: Item002
+  m_Name: Item003
   m_EditorClassIdentifier: 
-  sizeX: 0
-  sizeY: 0
-  color: {r: 0, g: 0, b: 0, a: 0}
+  sizeX: 1
+  sizeY: 1
+  color: {r: 0.39215687, g: 0.8666667, b: 0.09019608, a: 1}

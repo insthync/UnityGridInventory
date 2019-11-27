@@ -309,7 +309,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 5325662459299853685, guid: b2e27122c7791c84698c6040ba050239,
     type: 3}
-  container: {fileID: 1373460171}
+  slotContainer: {fileID: 1373460171}
+  itemPrefab: {fileID: 0}
+  itemContainer: {fileID: 1373460171}
   sizeX: 40
   sizeY: 40
   spaceX: 2
