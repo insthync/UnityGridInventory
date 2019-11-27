@@ -18,7 +18,7 @@ public class InventoryGrid : MonoBehaviour
     public int spaceY = 2;
     public int marginX = 2;
     public int marginY = 2;
-    public UIItem selectItem;
+    public UIItem selectedItem;
 
     [Header("Test tools")]
     public Item addingItem;
@@ -51,35 +51,63 @@ public class InventoryGrid : MonoBehaviour
             AddItem(addingItem);
         }
 
-        if (selectItem != null)
+        if (selectedItem != null)
         {
             // Move follow cursor
-            selectItem.transform.position = Input.mousePosition;
+            selectedItem.transform.position = Input.mousePosition;
         }
     }
 
     public void OnClick(int slotX, int slotY)
     {
-        if (selectItem == null)
+        if (selectedItem == null)
         {
             UIItem selectingItem;
             if (uiItems.TryGetValue(slotX + "_" + slotY, out selectingItem))
             {
                 // Set select item
-                selectItem = Instantiate(itemPrefab, selectItemContainer);
-                selectItem.x = selectingItem.x;
-                selectItem.y = selectingItem.y;
-                selectItem.item = selectingItem.item;
-                selectItem.grid = this;
-                selectItem.transform.position = Input.mousePosition;
+                selectedItem = Instantiate(itemPrefab, selectItemContainer);
+                selectedItem.x = selectingItem.x;
+                selectedItem.y = selectingItem.y;
+                selectedItem.item = selectingItem.item;
+                selectedItem.grid = this;
+                selectedItem.transform.position = Input.mousePosition;
                 // Remove item from slot
                 RemoveItem(slotX, slotY);
             }
         }
         else
         {
-            if (AddItem(selectItem.item, slotX, slotY))
-                Destroy(selectItem.gameObject);
+            UIItem selectingItem;
+            if (uiItems.TryGetValue(slotX + "_" + slotY, out selectingItem))
+            {
+                // Not empty slot, try select swap item
+                var customUIItems = CloneUIItems(uiItems);
+                if (RemoveItem(customUIItems, slotX, slotY) &&
+                    IsEnoughSlots(customUIItems, selectedItem.item, slotX, slotY))
+                {
+                    // Store old select item
+                    var tempSelectedItem = selectedItem;
+                    // Set new select item
+                    selectedItem = Instantiate(itemPrefab, selectItemContainer);
+                    selectedItem.x = selectingItem.x;
+                    selectedItem.y = selectingItem.y;
+                    selectedItem.item = selectingItem.item;
+                    selectedItem.grid = this;
+                    selectedItem.transform.position = Input.mousePosition;
+                    // Remove item from slot
+                    RemoveItem(slotX, slotY);
+                    // Drop old item to slot
+                    if (AddItem(tempSelectedItem.item, slotX, slotY))
+                        Destroy(tempSelectedItem.gameObject);
+                }
+            }
+            else
+            {
+                // Empty slot, try drop item
+                if (AddItem(selectedItem.item, slotX, slotY))
+                    Destroy(selectedItem.gameObject);
+            }
         }
     }
 
@@ -132,7 +160,13 @@ public class InventoryGrid : MonoBehaviour
         return false;
     }
 
+
     public bool IsEnoughSlots(Item item, int slotX, int slotY)
+    {
+        return IsEnoughSlots(uiItems, item, slotX, slotY);
+    }
+
+    public bool IsEnoughSlots(Dictionary<string, UIItem> uiItems, Item item, int slotX, int slotY)
     {
         if (slotY + item.sizeY > gridSizeY ||
             slotX + item.sizeX > gridSizeX)
@@ -151,6 +185,11 @@ public class InventoryGrid : MonoBehaviour
 
     public bool RemoveItem(int slotX, int slotY)
     {
+        return RemoveItem(uiItems, slotX, slotY);
+    }
+
+    public bool RemoveItem(Dictionary<string, UIItem> uiItems, int slotX, int slotY)
+    {
         if (!uiItems.ContainsKey(slotX + "_" + slotY))
             return false;
         UIItem removingItem = uiItems[slotX + "_" + slotY];
@@ -163,5 +202,15 @@ public class InventoryGrid : MonoBehaviour
         }
         Destroy(removingItem.gameObject);
         return true;
+    }
+
+    public Dictionary<string, UIItem> CloneUIItems(Dictionary<string, UIItem> original)
+    {
+        Dictionary<string, UIItem> result = new Dictionary<string, UIItem>();
+        foreach (KeyValuePair<string, UIItem> entry in original)
+        {
+            result[entry.Key] = entry.Value;
+        }
+        return result;
     }
 }
