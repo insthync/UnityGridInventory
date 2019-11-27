@@ -9,6 +9,7 @@ public class InventoryGrid : MonoBehaviour
     public RectTransform slotContainer;
     public UIItem itemPrefab;
     public RectTransform itemContainer;
+    public RectTransform selectItemContainer;
     public int gridSizeX = 8;
     public int gridSizeY = 4;
     public int slotSizeX = 40;
@@ -17,6 +18,7 @@ public class InventoryGrid : MonoBehaviour
     public int spaceY = 2;
     public int marginX = 2;
     public int marginY = 2;
+    public UIItem selectItem;
 
     [Header("Test tools")]
     public Item addingItem;
@@ -40,12 +42,7 @@ public class InventoryGrid : MonoBehaviour
             }
         }
     }
-
-    public void OnClick(int x, int y)
-    {
-        RemoveItem(x, y);
-    }
-
+    
     private void Update()
     {
         if (addItem)
@@ -53,13 +50,51 @@ public class InventoryGrid : MonoBehaviour
             addItem = false;
             AddItem(addingItem);
         }
+
+        if (selectItem != null)
+        {
+            // Move follow cursor
+            selectItem.transform.position = Input.mousePosition;
+        }
     }
 
-    public void AddItem(Item item)
+    public void OnClick(int slotX, int slotY)
+    {
+        if (selectItem == null)
+        {
+            UIItem selectingItem;
+            if (uiItems.TryGetValue(slotX + "_" + slotY, out selectingItem))
+            {
+                // Set select item
+                selectItem = Instantiate(itemPrefab, selectItemContainer);
+                selectItem.x = selectingItem.x;
+                selectItem.y = selectingItem.y;
+                selectItem.item = selectingItem.item;
+                selectItem.grid = this;
+                selectItem.transform.position = Input.mousePosition;
+                // Remove item from slot
+                RemoveItem(slotX, slotY);
+            }
+        }
+        else
+        {
+            if (AddItem(selectItem.item, slotX, slotY))
+                Destroy(selectItem.gameObject);
+        }
+    }
+
+    public bool AddItem(Item item)
     {
         int x = 0;
         int y = 0;
         if (FindEmptySlots(item, out x, out y))
+            return AddItem(item, x, y);
+        return false;
+    }
+
+    public bool AddItem(Item item, int x, int y)
+    {
+        if (IsEnoughSlots(item, x, y))
         {
             UIItem newItem = Instantiate(itemPrefab, itemContainer);
             newItem.x = x;
@@ -73,11 +108,9 @@ public class InventoryGrid : MonoBehaviour
                     uiItems[rX + "_" + rY] = newItem;
                 }
             }
+            return true;
         }
-        else
-        {
-            Debug.LogError("No empty slot");
-        }
+        return false;
     }
 
     public bool FindEmptySlots(Item item, out int slotX, out int slotY)
