@@ -26,9 +26,9 @@ public class InventoryGrid : MonoBehaviour
     {
         UISlot newSlot;
         int index = 0;
-        for (int y = 0; y < gridSizeX; ++y)
+        for (int y = 0; y < gridSizeY; ++y)
         {
-            for (int x = 0; x < gridSizeY; ++x)
+            for (int x = 0; x < gridSizeX; ++x)
             {
                 newSlot = Instantiate(slotPrefab, slotContainer);
                 newSlot.x = x;
