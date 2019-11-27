@@ -19,7 +19,7 @@ public class UIItem : MonoBehaviour
         tempTransform.anchorMax = new Vector2(0, 1);
         tempTransform.sizeDelta = new Vector2(
             (grid.slotSizeX * item.sizeX) + ((grid.spaceX - 1) * item.sizeX), 
-            -((grid.slotSizeY * item.sizeY) + ((grid.spaceY - 1) * item.sizeY)));
+            (grid.slotSizeY * item.sizeY) + ((grid.spaceY - 1) * item.sizeY));
         tempTransform.anchoredPosition = new Vector2(
             grid.marginX + (grid.slotSizeX * x) + (grid.spaceX * x),
             -(grid.marginY + (grid.slotSizeY * y) + (grid.spaceY * y)));
